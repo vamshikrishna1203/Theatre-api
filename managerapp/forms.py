@@ -11,7 +11,7 @@ class SeatForms(forms.ModelForm):
 
     def clean_seat_no(self):
         inputseat = self.cleaned_data['seat_no']
-        if inputseat > settings.MAX_CAPACITY:
+        if inputseat > settings.MAX_CAPACITY:  # raises error when capicity is exceeded
             raise forms.ValidationError('Sorry slot is unavialble')
         return inputseat
 
