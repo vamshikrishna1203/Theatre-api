@@ -43,3 +43,16 @@ class Occpy(View,HttpResponseMixin, OccupyMixin):
 
         userdata = json.loads(data)
         user = self.get_customer(userdata)
+
+
+        if user is not None:
+            seat_no = self.get_seat_no()
+            new_data = {
+                'customer' : user,
+                'seat_no'  : seat_no
+
+            }
+
+        else:
+            json_data = json.dumps({'msg':'please send valid data  or slots are not empty'})
+            return self.render_to_http_response(json_data,status= 404)
