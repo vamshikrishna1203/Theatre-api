@@ -5,7 +5,10 @@ from django.views.generic import View
 import json
 
 
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from managerapp.utils import is_json
+
 
 class GetPerson(View, RetriveMixin, HttpResponseMixin):
 
@@ -27,6 +30,8 @@ class GetPerson(View, RetriveMixin, HttpResponseMixin):
         json_data = json.dumps(user, indent= 4)
         return self.render_to_http_response(json_data,status= 200)
 
+        
+@method_decorator(csrf_exempt, name = 'dispatch')
 class Occpy(View,HttpResponseMixin):       
 
     def post(self,request,*args, **kwargs):
