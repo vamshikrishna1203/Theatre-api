@@ -1,6 +1,7 @@
 from django.contrib import admin
 from managerapp.models import Customer, Seat
 
-admin.site.register(Customer)
+#Register models here
+admin.site.register(Customer) 
 admin.site.register(Seat)
 
