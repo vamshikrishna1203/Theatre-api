@@ -12,7 +12,7 @@ class RetriveMixin(object):
 
     def get_data(self,seat):
         data = {
-            'name': seat.customer.u_name,
+            'name': seat.customer.name,
             'ticket': str(seat.customer.ticket_id),
             'seat_no': seat.seat_no
         }
@@ -30,10 +30,10 @@ class RetriveMixin(object):
                 lis.append(self.get_data(i))
         return lis
 
-    def get_object_by_name(self,u_name):
+    def get_object_by_name(self,name):
         lis= []
         con = Seat.objects.all()
         for i in con:
-            if i.customer.u_name == u_name:
+            if i.customer.name == name:
                 lis.append(self.get_data(i))
         return lis
