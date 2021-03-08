@@ -65,3 +65,6 @@ class Occpy(View,HttpResponseMixin, OccupyMixin):
         if form.errors:
             json_data = json.dumps(form.errors['seat_no'])
             return self.render_to_http_response(json_data,status = 500)        
+
+@method_decorator(csrf_exempt, name = 'dispatch')
+class Vacate(View, HttpResponseMixin):
