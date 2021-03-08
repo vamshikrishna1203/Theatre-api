@@ -8,7 +8,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from managerapp.utils import is_json
-
+from managerapp.forms import SeatForms
 
 class GetPerson(View, RetriveMixin, HttpResponseMixin):
 
@@ -56,3 +56,12 @@ class Occpy(View,HttpResponseMixin, OccupyMixin):
         else:
             json_data = json.dumps({'msg':'please send valid data  or slots are not empty'})
             return self.render_to_http_response(json_data,status= 404)
+
+        form = SeatForms(new_data)
+        if form.is_valid():
+            form.save(commit = True)
+            json_data = json.dumps({'msg' : 'Resource Created Successfully'})
+            return self.render_to_http_response(json_data, status = 200)
+        if form.errors:
+            json_data = json.dumps(form.errors['seat_no'])
+            return self.render_to_http_response(json_data,status = 500)        
