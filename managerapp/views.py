@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from manaagerapp.models import Seat,Customer
-from managerapp.mixins import RetriveMixin
+from managerapp.models import Seat,Customer
+from managerapp.mixins import RetriveMixin, HttpResponseMixin
 from django.views.generic import View
 import json
 
 
-class GetPerson(View, RetriveMixin):
+class GetPerson(View, RetriveMixin, HttpResponseMixin):
 
     def get(self,request,name=None,seat_no=None,ticket_id=None,*args, **kwargs):
         try:
