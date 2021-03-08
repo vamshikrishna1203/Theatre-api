@@ -68,3 +68,9 @@ class Occpy(View,HttpResponseMixin, OccupyMixin):
 
 @method_decorator(csrf_exempt, name = 'dispatch')
 class Vacate(View, HttpResponseMixin):
+    def get_object_by_seat(self,seat_no):
+        try:
+            user = Seat.objects.get(seat_no = seat_no)
+        except Seat.DoesNotExist:
+            user = None
+        return user
