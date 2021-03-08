@@ -1,5 +1,5 @@
 from django import forms
-from customer.models import Seat
+from managerapp.models import Seat
 from django.conf import settings
 class SeatForms(forms.ModelForm):
     def clean_seat_no(self):
