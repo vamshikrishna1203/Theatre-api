@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+MAX_CAPACITY = 5
 
 # Application definition
 
