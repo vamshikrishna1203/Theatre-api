@@ -7,4 +7,4 @@ def is_json(data):
         valid = True
     except ValueError:
         valid = False
-    return valid 
+    return valid

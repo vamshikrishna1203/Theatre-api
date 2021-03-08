@@ -20,4 +20,4 @@ class Seat(models.Model):
     Defines the attributes of a seat
     """
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    seat_no = models.IntegerField(primary_key=True)    
+    seat_no = models.IntegerField(primary_key=True)
