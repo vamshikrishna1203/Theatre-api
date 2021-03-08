@@ -1,4 +1,4 @@
-from manaagerapp.models import Seat,Customer
+from managerapp.models import Seat,Customer
 from django.conf import settings
 from django.http import HttpResponse
 
