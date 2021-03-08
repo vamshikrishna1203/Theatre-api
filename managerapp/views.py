@@ -5,6 +5,8 @@ from django.views.generic import View
 import json
 
 
+from managerapp.utils import is_json
+
 class GetPerson(View, RetriveMixin, HttpResponseMixin):
 
     def get(self,request,name=None,seat_no=None,ticket_id=None,*args, **kwargs):
@@ -24,3 +26,12 @@ class GetPerson(View, RetriveMixin, HttpResponseMixin):
             return self.render_to_http_response(json_data,status= 404)
         json_data = json.dumps(user, indent= 4)
         return self.render_to_http_response(json_data,status= 200)
+
+class Occpy(View,HttpResponseMixin):       
+
+    def post(self,request,*args, **kwargs):
+        data = request.body
+        valid_json = is_json(data)
+        if not valid_json:
+            json_data = json.dumps({'msg' : 'please send valid json data only'})
+            return self.render_to_http_response(json_data,status= 404)
