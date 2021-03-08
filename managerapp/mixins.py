@@ -37,3 +37,9 @@ class RetriveMixin(object):
             if i.customer.name == name:
                 lis.append(self.get_data(i))
         return lis
+
+class OccupyMixin(object):
+    def get_customer(self,data):
+        obj = Customer.objects.get(ticket_id = data['ticket_id'])
+        if(obj.name == data['name']):
+            return obj
