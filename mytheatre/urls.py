@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^occupy/$', views.Occpy.as_view()),
     url(r'^get_info/(?:(?P<seat_no>\d+)|(?P<u_name>\w+)|(?P<ticket_id>[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}))/$', views.GetPerson.as_view()),
+    url(r'^vacate/(?P<seat_no>\d+)/$', views.Vacate.as_view()),
 
 ]
