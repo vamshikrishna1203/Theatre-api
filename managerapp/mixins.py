@@ -1,4 +1,4 @@
-from consumer_app.models import Seat,Customer
+from manaagerapp.models import Seat,Customer
 from django.conf import settings
 from django.http import HttpResponse
 class RetriveMixin(object):
@@ -6,8 +6,8 @@ class RetriveMixin(object):
 
     def get_data(self,seat):
         data = {
-            'name': seat.consumer.u_name,
-            'ticket': str(seat.consumer.ticket_id),
+            'name': seat.customer.u_name,
+            'ticket': str(seat.customer.ticket_id),
             'seat_no': seat.seat_no
         }
         return data
@@ -21,5 +21,13 @@ class RetriveMixin(object):
         con = Seat.objects.all()
         for i in con:
             if str(i.customer.ticket_id) == ticket_id:
+                lis.append(self.get_data(i))
+        return lis
+
+    def get_object_by_name(self,u_name):
+        lis= []
+        con = Seat.objects.all()
+        for i in con:
+            if i.customer.u_name == u_name:
                 lis.append(self.get_data(i))
         return lis
