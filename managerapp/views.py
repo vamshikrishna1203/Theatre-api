@@ -74,3 +74,17 @@ class Vacate(View, HttpResponseMixin):
         except Seat.DoesNotExist:
             user = None
         return user
+
+    def delete(self,request, seat_no , *args, **kwargs):
+        seat = self.get_object_by_seat(seat_no)
+        if seat is None:
+            json_data = json.dumps({'msg':'No matched record found cannot perform deletion'})
+            return self.render_to_http_response(json_data,status= 404)
+        else:
+            status, deleted_item = seat.delete()
+            if status ==1:
+                json_data = json.dumps({'msg':'performed deletion successfully'})
+                return self.render_to_http_response(json_data, status = 200)
+            
+            json_data = json.dumps({'unable to delete plz try again'})
+            return self.render_to_http_response(json_data,status= 404)
