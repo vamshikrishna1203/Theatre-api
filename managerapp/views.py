@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from managerapp.models import Seat,Customer
-from managerapp.mixins import RetriveMixin, HttpResponseMixin
+from managerapp.mixins import RetriveMixin, HttpResponseMixin, OccupyMixin
 from django.views.generic import View
 import json
 
@@ -30,9 +30,9 @@ class GetPerson(View, RetriveMixin, HttpResponseMixin):
         json_data = json.dumps(user, indent= 4)
         return self.render_to_http_response(json_data,status= 200)
 
-        
+
 @method_decorator(csrf_exempt, name = 'dispatch')
-class Occpy(View,HttpResponseMixin):       
+class Occpy(View,HttpResponseMixin, OccupyMixin):       
 
     def post(self,request,*args, **kwargs):
         data = request.body
@@ -40,3 +40,6 @@ class Occpy(View,HttpResponseMixin):
         if not valid_json:
             json_data = json.dumps({'msg' : 'please send valid json data only'})
             return self.render_to_http_response(json_data,status= 404)
+
+        userdata = json.loads(data)
+        user = self.get_customer(userdata)
