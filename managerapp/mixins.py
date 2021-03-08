@@ -1,14 +1,19 @@
-from managerapp.models import Seat,Customer
+from managerapp.models import Seat, Customer
 from django.conf import settings
 from django.http import HttpResponse
 
-class HttpResponseMixin(object):
 
-    def render_to_http_response(self, json_data, status = 200):
-        return HttpResponse(json_data, content_type = 'application/json', status= status)
+class HttpResponseMixin(object):
+    """Renders json to HttpResponse"""
+
+    def render_to_http_response(self, json_data, status=200):
+        """Inputs json_data returns HttpResponse"""
+        return HttpResponse(json_data, content_type='application/json
+                            ,status=status)
+
 
 class RetriveMixin(object):
-
+   """"""
 
     def get_data(self,seat):
         data = {
