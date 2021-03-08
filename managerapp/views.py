@@ -70,10 +70,10 @@ class Occpy(View,HttpResponseMixin, OccupyMixin):
 class Vacate(View, HttpResponseMixin):
     def get_object_by_seat(self,seat_no):
         try:
-            user = Seat.objects.get(seat_no = seat_no)
+            seat = Seat.objects.get(seat_no = seat_no)
         except Seat.DoesNotExist:
-            user = None
-        return user
+            seat = None
+        return seat
 
     def delete(self,request, seat_no , *args, **kwargs):
         seat = self.get_object_by_seat(seat_no)
