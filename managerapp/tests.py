@@ -6,23 +6,27 @@ BASE_URL = 'http://127.0.0.1:8000/'
 
 
 
-class BookSeatTest(TestCase):
-    """ Test module for seat reservaiton """
+class BookSeatTest(TestCase,OccupyTestFuctions):
+    """Test class for seat reservaiton"""
 
     def test_create_valid_reservation(self):
-        response = create_valid_resource()
+        # Providing credentials correctly
+        response = self.create_valid_resource()
         self.assertEqual(response.status_code, 200)
 
     def test_create_invalid_reservation(self):
-        response = create_invalid_resource()
+        # Providing invalid information which is not present
+        response = self.create_invalid_resource()
         self.assertEqual(response.status_code, 404)
 
-class VacateTest(TestCase):
-    
+class VacateTest(TestCase, VacateTestFuctions):
+    """Test class for vacating seat""" 
     def test_create_valid_vacate(self):
-        response = delete_resource(4)
+        # Passing valid seat_no
+        response = self.delete_resource(4)
         self.assertEqual(response.status_code, 200)
-
+ 
     def test_create_invalid_vacate(self):
-        response = delete_resource(51)
+        # Vacating the seat which is not allotted.
+        response = self.delete_resource(51)
         self.assertEqual(response.status_code, 404)
