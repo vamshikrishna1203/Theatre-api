@@ -47,10 +47,8 @@ class GetPerson(View, RetriveMixin, HttpResponseMixin):
         json_data = json.dumps(user, indent=4)
         return self.render_to_http_response(json_data, status=200)
 
-# Disable csrf token
 
-
-@method_decorator(csrf_exempt, name='dispatch')
+@method_decorator(csrf_exempt, name='dispatch')  # Disable csrf token
 class Occupy(View, HttpResponseMixin, OccupyMixin):
     """Handles post request of /occupy/ url"""
 
@@ -110,7 +108,7 @@ class Vacate(View, HttpResponseMixin):
         # If seat not present returns error message
         if seat is None:
             json_data = json.dumps(
-                {'msg': 'No matched record found cannot perform deletion'})
+                {'msg': 'Matched record not found cannot perform deletion'})
             return self.render_to_http_response(json_data, status=404)
         else:
             status, deleted_item = seat.delete()
