@@ -15,13 +15,13 @@ class GetPerson(View, RetriveMixin, HttpResponseMixin):
     """Handles get request of /get_info/ url"""
 
     def get(
-       self,
-       request,
-       name=None,
-       seat_no=None,
-       ticket_id=None,
-       *args,
-       **kwargs):
+            self,
+            request,
+            name=None,
+            seat_no=None,
+            ticket_id=None,
+            *args,
+            **kwargs):
         try:
             if name is not None:
                 # RetriveMixin method mixins.py
@@ -30,10 +30,11 @@ class GetPerson(View, RetriveMixin, HttpResponseMixin):
                 user = self.get_object_by_seat(seat_no)  # RetriveMixin method
             else:
                 user = self.get_object_by_ticket(
-                   ticket_id)  # RetriveMixin method
+                    ticket_id)  # RetriveMixin method
         except Seat.DoesNotExist:
             # Seat doesn't exist exception
-            json_data = json.dumps({'msg': 'The requested resource unavailable'})
+            json_data = json.dumps(
+                {'msg': 'The requested resource unavailable'})
             # HttpResponseMixin method mixins.py
             return self.render_to_http_response(json_data, status=404)
 
@@ -47,6 +48,8 @@ class GetPerson(View, RetriveMixin, HttpResponseMixin):
         return self.render_to_http_response(json_data, status=200)
 
 # Disable csrf token
+
+
 @method_decorator(csrf_exempt, name='dispatch')
 class Occupy(View, HttpResponseMixin, OccupyMixin):
     """Handles post request of /occupy/ url"""
