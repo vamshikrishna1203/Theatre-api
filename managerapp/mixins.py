@@ -31,7 +31,7 @@ class RetriveMixin(object):
            Returns Seat object associated
            """
         con = Seat.objects.get(seat_no=seat_no)
-        return self.get_data(con)
+        return list(self.get_data(con))
 
     def get_object_by_ticket(self, ticket_id):
         """For given ticket id of customer
