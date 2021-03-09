@@ -19,9 +19,11 @@ from managerapp import views
 from django.conf.urls import url
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    url(r'^occupy/$', views.Occpy.as_view()),
+    path('admin/', admin.site.urls), # admin site
+    url(r'^occupy/$', views.Occpy.as_view()),#occupy url endpoint
+    #get_info url endpoint which takes ticket_id or name or seat_no
     url(r'^get_info/(?:(?P<seat_no>\d+)|(?P<u_name>\w+)|(?P<ticket_id>[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}))/$', views.GetPerson.as_view()),
+    #vacate url endpoint which takes seat_no
     url(r'^vacate/(?P<seat_no>\d+)/$', views.Vacate.as_view()),
 
 ]
