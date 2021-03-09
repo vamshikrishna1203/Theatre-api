@@ -51,8 +51,6 @@ class GetPerson(View, RetriveMixin, HttpResponseMixin):
 # Disable csrf token
 @method_decorator(csrf_exempt, name='dispatch')
 class Occpy(View, HttpResponseMixin, OccupyMixin):
-
-
 """Handles post request of /occupy/ url"""
 
   def post(self, request, *args, **kwargs):
