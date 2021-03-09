@@ -5,6 +5,7 @@ BASE_URL = 'http://127.0.0.1:8000/'
 
 class GetInfoTestFucntion:
     """TestCase Fucntion for  /get_info/<NAME or SEATNUM or TICKETID>"""
+
     def get_resource(self, data):
         # Takes SEATNUM or TICKETID or NAME
         response = requests.get(BASE_URL + 'get_info/' + str(data) + '/')
@@ -13,6 +14,7 @@ class GetInfoTestFucntion:
 
 class OccupyTestFuctions:
     """TestCase fucntions for /occupy/"""
+
     def create_valid_resource(self, name, ticket_id):
         # Creating seat using valid resource
         # Formating data according to Customer object present in model objects
@@ -36,6 +38,7 @@ class OccupyTestFuctions:
 
 class VacateTestFuctions:
     """TestCase fucntions for /vacate/"""
+
     def delete_resource(self, id):
         # Vacating resource using seat_no
         response = requests.delete(BASE_URL + 'vacate/' + str(id) + '/')
