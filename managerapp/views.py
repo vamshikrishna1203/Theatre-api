@@ -85,7 +85,7 @@ class Occupy(View, HttpResponseMixin, OccupyMixin):
         form = SeatForms(new_data)  # forms.py
         if form.is_valid():
             form.save(commit=True)
-            json_data = json.dumps({'msg': form.clean_seat_no()})
+            json_data = json.dumps({'Seat Number': form.clean_seat_no()})
             return self.render_to_http_response(json_data, status=200)
         if form.errors:
             # returns error message when form is invalid
