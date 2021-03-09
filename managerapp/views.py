@@ -12,11 +12,9 @@ from managerapp.forms import SeatForms
 
 
 class GetPerson(View, RetriveMixin, HttpResponseMixin):
+    """Handles get request of /get_info/ url"""
 
-
-"""Handles get request of /get_info/ url"""
-
-  def get(
+    def get(
        self,
        request,
        name=None,
@@ -24,7 +22,7 @@ class GetPerson(View, RetriveMixin, HttpResponseMixin):
        ticket_id=None,
        *args,
        **kwargs):
-       try:
+        try:
             if name is not None:
                 # RetriveMixin method mixins.py
                 user = self.get_object_by_name(name)
@@ -35,14 +33,14 @@ class GetPerson(View, RetriveMixin, HttpResponseMixin):
                    ticket_id)  # RetriveMixin method
         except Seat.DoesNotExist:
             # Seat doesn't exist exception
-            json_data = json.dumps({'msg': 'The requested resourse unavailable'})
+            json_data = json.dumps({'msg': 'The requested resource unavailable'})
             # HttpResponseMixin method mixins.py
             return self.render_to_http_response(json_data, status=404)
 
         if not user:
             # user not found exception
             json_data = json.dumps(
-                {'msg': 'The requested resource unavailable'})
+                {'msg': 'The requested resource is unavailable'})
             return self.render_to_http_response(json_data, status=404)
         # gets person informaiton and returns json data
         json_data = json.dumps(user, indent=4)
@@ -50,17 +48,17 @@ class GetPerson(View, RetriveMixin, HttpResponseMixin):
 
 # Disable csrf token
 @method_decorator(csrf_exempt, name='dispatch')
-class Occpy(View, HttpResponseMixin, OccupyMixin):
-"""Handles post request of /occupy/ url"""
+class Occupy(View, HttpResponseMixin, OccupyMixin):
+    """Handles post request of /occupy/ url"""
 
-  def post(self, request, *args, **kwargs):
-       data = request.body
+    def post(self, request, *args, **kwargs):
+        data = request.body
         # validating request data using is_json() utils.py
         valid_json = is_json(data)
 
         if not valid_json:
             # error message is returned if data is not json
-            json_data = json.dumps({'msg': 'please send valid json data only'})
+            json_data = json.dumps({'msg': 'Please send valid json data only'})
             return self.render_to_http_response(json_data, status=404)
 
         userdata = json.loads(data)
@@ -77,14 +75,14 @@ class Occpy(View, HttpResponseMixin, OccupyMixin):
 
         else:
             json_data = json.dumps(
-                {'msg': 'please send valid data  or slots are not empty'})
+                {'msg': 'Please send valid data'})
             return self.render_to_http_response(json_data, status=404)
 
         # validates Seat data using form before Seat object creation
         form = SeatForms(new_data)  # forms.py
         if form.is_valid():
             form.save(commit=True)
-            json_data = json.dumps({'msg': 'Resource Created Successfully'})
+            json_data = json.dumps({'msg': form.clean_seat_no()})
             return self.render_to_http_response(json_data, status=200)
         if form.errors:
             # returns error message when form is invalid
@@ -96,30 +94,30 @@ class Occpy(View, HttpResponseMixin, OccupyMixin):
 class Vacate(View, HttpResponseMixin):
     """Handles post request of /occupy/ url"""
 
-       def get_object_by_seat(self, seat_no):
-            # retrive object by given seat_no
-            try:
-                seat = Seat.objects.get(seat_no=seat_no)
-            except Seat.DoesNotExist:
-                seat = None
-            return seat
+    def get_object_by_seat(self, seat_no):
+        # retrive object by given seat_no
+        try:
+            seat = Seat.objects.get(seat_no=seat_no)
+        except Seat.DoesNotExist:
+            seat = None
+        return seat
 
-        def delete(self, request, seat_no, *args, **kwargs):
-            seat = self.get_object_by_seat(seat_no)
-            # If seat not present returns error message
-            if seat is None:
+    def delete(self, request, seat_no, *args, **kwargs):
+        seat = self.get_object_by_seat(seat_no)
+        # If seat not present returns error message
+        if seat is None:
+            json_data = json.dumps(
+                {'msg': 'No matched record found cannot perform deletion'})
+            return self.render_to_http_response(json_data, status=404)
+        else:
+            status, deleted_item = seat.delete()
+            if status == 1:
+                # returns success message after successfull deletion of
+                # Seat object
                 json_data = json.dumps(
-                    {'msg': 'No matched record found cannot perform deletion'})
-                return self.render_to_http_response(json_data, status=404)
-            else:
-                status, deleted_item = seat.delete()
-                if status == 1:
-                    # returns success message after successfull deletion of
-                    # Seat object
-                    json_data = json.dumps(
-                        {'msg': 'performed deletion successfully'})
-                    return self.render_to_http_response(json_data, status=200)
+                    {'msg': 'Performed deletion successfully'})
+                return self.render_to_http_response(json_data, status=200)
 
-                # returns error message unable to delete
-                json_data = json.dumps({'unable to delete plz try again'})
-                return self.render_to_http_response(json_data, status=404)
+            # returns error message unable to delete
+            json_data = json.dumps({'Unable to delete please try again'})
+            return self.render_to_http_response(json_data, status=404)
