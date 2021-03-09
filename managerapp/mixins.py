@@ -1,7 +1,7 @@
 from managerapp.models import Seat, Customer
 from django.conf import settings
 from django.http import HttpResponse
-
+from django.forms import ValidationError
 
 class HttpResponseMixin(object):
     """Renders json to HttpResponse"""
@@ -61,16 +61,16 @@ class OccupyMixin(object):
 
     def get_customer(self, data):
         """Validates customer data and returns associated object with data"""
-        obj = Customer.objects.get(ticket_id=data['ticket_id'])
-        if(obj.name == data['name']):
-            return obj
+        try:
+            obj = Customer.objects.get(ticket_id=data['ticket_id'])
+            if(obj.name == data['name']):
+                return obj
+        except ValidationError:
+            return None
 
     def get_seat_no(self):
         """Returns seat number in serial order"""
         for seat_no in range(1, settings.MAX_CAPACITY + 1):
-            print(seat_no)
-
             if not Seat.objects.filter(seat_no=seat_no).exists():
-                print(seat_no)
                 return seat_no
         return settings.MAX_CAPACITY + 1
