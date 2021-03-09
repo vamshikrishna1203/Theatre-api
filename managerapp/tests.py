@@ -23,6 +23,22 @@ class BookSeatTest(TestCase,OccupyTestFuctions):
         valid_ticket = '2e6e79c4-aa80-406a-9517-9b75552eb7ed'
         response = self.create_invalid_resource(invalid_name, valid_ticket)
         self.assertEqual(response.status_code, 404)
+        
+class GetPersonTest(TestCase, GetInfoTestFucntion):
+    def get_valid_person_by_name(self):
+        name = 'vamshi'
+        response = self.get_resource(name)
+        self.assertEqual(response.status_code, 200)
+
+    def get_valid_person_by_ticket(self):
+        ticket_id = '2e6e79c4-aa80-406a-9517-9b75552eb7ed'
+        response = self.get_resource(ticket_id)
+        self.assertEqual(response.status_code, 200)   
+
+    def get_valid_person_by_seat(self):
+        seat_no = 1
+        response = self.get_resource(seat_no)
+        self.assertEqual(response.status_code, 200)   
 
 class VacateTest(TestCase, VacateTestFuctions):
     """Test class for vacating seat""" 
